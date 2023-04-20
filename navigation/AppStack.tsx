@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,14 +19,14 @@ const Tab = createBottomTabNavigator();
 const FeedStack = ({navigation}: any) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Social App With Firebase"
+      name="RN Social"
       component={HomeScreen}
       options={{
         headerTitleAlign: 'center',
         headerTitleStyle: {
           color: '#2e64e5',
           fontFamily: 'Kufam-SemiBoldItalic',
-          fontSize: 20,
+          fontSize: 18,
         },
         headerStyle: {
           shadowColor: '#fff',
@@ -36,7 +36,7 @@ const FeedStack = ({navigation}: any) => (
           <View style={{marginRight: 10}}>
             <FontAwesome5.Button
               name="plus"
-              size={25}
+              size={22}
               backgroundColor="#fff"
               color="#2e64e5"
               onPress={() => navigation.navigate('AddPost')}
@@ -60,15 +60,6 @@ const FeedStack = ({navigation}: any) => (
         headerBackImage: () => (
           <View style={{marginLeft: 15}}>
             <Ionicons name="arrow-back" size={25} color="#2e64e5" />
-          </View>
-        ),
-        headerRight: () => (
-          <View style={{marginRight: 15}}>
-            <TouchableOpacity>
-              <Text style={{fontWeight: '600', fontSize: 18, color: '#2e64e5'}}>
-                Post
-              </Text>
-            </TouchableOpacity>
           </View>
         ),
       }}

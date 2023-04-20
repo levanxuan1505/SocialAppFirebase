@@ -19,7 +19,7 @@ const AuthStack = () => {
   let routeName;
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched').then(value => {
+    AsyncStorage.getItem('alreadyLaunched').then((value: any) => {
       if (value == null) {
         AsyncStorage.setItem('alreadyLaunched', 'true'); // No need to wait for `setItem` to finish, although you might want to handle errors
         setIsFirstLaunch(true);
@@ -29,14 +29,13 @@ const AuthStack = () => {
     }); // Add some error handling, also you can simply do setIsFirstLaunch(null)
 
     GoogleSignin.configure({
-      webClientId:
-        '239050460545-frmf683ar2nql9m81ke6sgpdm876oco7.apps.googleusercontent.com',
+      webClientId: 'YOUR_APP_WEB_CLIENT_ID',
     });
   }, []);
 
   if (isFirstLaunch === null) {
     return null; // This is the 'tricky' part: The query to AsyncStorage is not finished, but we have to present something to the user. Null will just render nothing, so you can also put a placeholder of some sort, but effectively the interval between the first mount and AsyncStorage retrieving your data won't be noticeable to the user. But if you want to display anything then you can use a LOADER here
-  } else if (isFirstLaunch === true) {
+  } else if (isFirstLaunch == true) {
     routeName = 'Onboarding';
   } else {
     routeName = 'Login';
