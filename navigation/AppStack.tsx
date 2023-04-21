@@ -13,6 +13,8 @@ import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AddPostScreen from '../screens/AddPostScreen';
 import MessagesScreen from '../screens/MessagesScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
+import {Message} from 'react-native-gifted-chat';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -107,6 +109,46 @@ const MessageStack = ({navigation}: any) => (
   </Stack.Navigator>
 );
 
+const ProfileStack = ({navigation}: any) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Profiles"
+      component={ProfileScreen}
+      options={{
+        headerTitleAlign: 'center',
+        headerShown: false,
+        headerTitleStyle: {
+          color: '#2e64e5',
+          fontFamily: 'Kufam-SemiBoldItalic',
+          fontSize: 18,
+        },
+        headerStyle: {
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="EditProfile"
+      component={EditProfileScreen}
+      options={{
+        // title: route.params.userName,
+        headerBackTitleVisible: false,
+        headerTitle: 'Edit Profile',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          color: '#2e64e5',
+          fontFamily: 'Kufam-SemiBoldItalic',
+          fontSize: 18,
+        },
+        headerStyle: {
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+  </Stack.Navigator>
+);
 const AppStack = () => {
   // const getTabBarVisibility = (route: any) => {
   //   const routeName = route.state
@@ -169,7 +211,7 @@ const AppStack = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStack}
         options={{
           // tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (

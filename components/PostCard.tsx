@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {
@@ -18,13 +17,17 @@ import {
   Divider,
 } from '../styles/FeedStyles';
 
+import ProgressiveImage from './ProgressiveImage';
+
 import {AuthContext} from '../navigation/AuthProvider';
 
 import moment from 'moment';
-import ProgressiveImage from './ProgressiveImage';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import firestore from '@react-native-firebase/firestore';
 
-const PostCard = ({item, onDelete}) => {
+const PostCard = ({item, onDelete, onPress}) => {
   const {user, logout} = useContext(AuthContext);
+  const [userData, setUserData] = useState(null);
 
   likeIcon = item.liked ? 'heart' : 'heart-outline';
   likeIconColor = item.liked ? '#2e64e5' : '#333';
@@ -45,21 +48,46 @@ const PostCard = ({item, onDelete}) => {
     commentText = 'Comment';
   }
 
+  const getUser = async () => {
+    await firestore()
+      .collection('users')
+      .doc(item.userId)
+      .get()
+      .then(documentSnapshot => {
+        if (documentSnapshot.exists) {
+          console.log('User Data', documentSnapshot.data());
+          setUserData(documentSnapshot.data());
+        }
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <Card key={item.id}>
       <UserInfo>
-        <UserImg source={{uri: item.userImg}} />
+        <UserImg
+          source={{
+            uri: userData
+              ? userData.userImg ||
+                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
+              : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+          }}
+        />
         <UserInfoText>
-          <UserName>{item.userName}</UserName>
+          <TouchableOpacity onPress={onPress}>
+            <UserName>
+              {userData ? userData.fname || 'Test' : 'Test'}{' '}
+              {userData ? userData.lname || 'User' : 'User'}
+            </UserName>
+          </TouchableOpacity>
           <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
         </UserInfoText>
       </UserInfo>
       <PostText>{item.post}</PostText>
-      {/* {item.postImg != null ? (
-        <PostImg source={{uri: item.postImg}} />
-      ) : (
-        <Divider />
-      )} */}
+      {/* {item.postImg != null ? <PostImg source={{uri: item.postImg}} /> : <Divider />} */}
       {item.postImg != null ? (
         <ProgressiveImage
           defaultImageSource={require('../assets/default-img.jpg')}
