@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
@@ -15,11 +14,11 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 const Stack = createStackNavigator();
 
 const AuthStack = () => {
-  const [isFirstLaunch, setIsFirstLaunch]: any = useState(null);
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
   let routeName;
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched').then((value: any) => {
+    AsyncStorage.getItem('alreadyLaunched').then(value => {
       if (value == null) {
         AsyncStorage.setItem('alreadyLaunched', 'true'); // No need to wait for `setItem` to finish, although you might want to handle errors
         setIsFirstLaunch(true);

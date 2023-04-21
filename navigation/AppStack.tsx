@@ -12,6 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AddPostScreen from '../screens/AddPostScreen';
+import MessagesScreen from '../screens/MessagesScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,7 +20,7 @@ const Tab = createBottomTabNavigator();
 const FeedStack = ({navigation}: any) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="RN Social"
+      name="Social App With Firebase"
       component={HomeScreen}
       options={{
         headerTitleAlign: 'center',
@@ -67,7 +68,66 @@ const FeedStack = ({navigation}: any) => (
   </Stack.Navigator>
 );
 
+const MessageStack = ({navigation}: any) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Messagess"
+      component={MessagesScreen}
+      options={{
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          color: '#2e64e5',
+          fontFamily: 'Kufam-SemiBoldItalic',
+          fontSize: 18,
+        },
+        headerStyle: {
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="Chat"
+      component={ChatScreen}
+      options={({route}: any) => ({
+        // title: route.params.userName,
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          color: '#2e64e5',
+          fontFamily: 'Kufam-SemiBoldItalic',
+          fontSize: 18,
+        },
+        headerStyle: {
+          shadowColor: '#fff',
+          elevation: 0,
+        },
+      })}
+    />
+  </Stack.Navigator>
+);
+
 const AppStack = () => {
+  // const getTabBarVisibility = (route: any) => {
+  //   const routeName = route.state
+  //     ? route.state.routes[route.state.index].name
+  //     : '';
+
+  //   if (routeName === 'Chat' || routeName === 'AddPost') {
+  //     return false;
+  //   }
+  //   return true;
+  // };
+  function getTabBarVisibility(route: any) {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : route.params?.screen || 'Home';
+
+    if (routeName === 'Details') {
+      return false;
+    }
+    return true;
+  }
   return (
     <Tab.Navigator
       screenOptions={{
@@ -77,8 +137,9 @@ const AppStack = () => {
       <Tab.Screen
         name="Home"
         component={FeedStack}
-        options={{
+        options={({route}) => ({
           tabBarLabel: 'Home',
+          tabBarVisible: route.state && route.state.index === 0,
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
               name="home-outline"
@@ -86,13 +147,17 @@ const AppStack = () => {
               size={size}
             />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="Messages"
-        component={ChatScreen}
-        options={{
-          // tabBarLabel: 'Home',
+        component={MessageStack}
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisibility(route),
+          // Or Hide tabbar when push!
+          // https://github.com/react-navigation/react-navigation/issues/7677
+          // tabBarVisible: route.state && route.state.index === 0,
+          tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (
             <Ionicons
               name="chatbox-ellipses-outline"
@@ -100,7 +165,7 @@ const AppStack = () => {
               size={size}
             />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="Profile"

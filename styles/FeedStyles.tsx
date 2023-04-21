@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.View`
   flex: 1;
-  align-items: center;
+  // align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
   background-color: #fff;
-  padding-left: 15px;
-  padding-right: 15px;
 `;
 
 export const Card = styled.View`
@@ -50,12 +50,13 @@ export const PostText = styled.Text`
   font-family: 'Lato-Regular';
   padding-left: 15px;
   padding-right: 15px;
+  margin-bottom: 15px;
 `;
 
 export const PostImg = styled.Image`
   width: 100%;
   height: 250px;
-  margin-top: 15px;
+  // margin-top: 15px;
 `;
 
 export const Divider = styled.View`
